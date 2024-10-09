@@ -1,0 +1,22 @@
+services:
+  proxy:
+    build: .
+    networks:
+      macvlan0:
+      bridge0:
+        ipv4_address: 172.19.0.2
+    ports:
+      - 1080:1080
+
+networks:
+  macvlan0:
+    driver: macvlan
+    driver_opts:
+      parent: ${IFNAME:?error}
+
+  bridge0:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
+          gateway: 172.19.0.1
